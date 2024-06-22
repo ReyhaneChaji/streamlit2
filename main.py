@@ -40,26 +40,23 @@ if st.button('ارسال'):
 
 # --------------
 
-# رسم نمودار دایره‌ای بر اساس جنسیت
+
 st.title("نمودار جنسیت ثبت نامی‌ها")
 
-# شمارش تعداد افراد بر اساس جنسیت
+
 gender_counts = df['جنسیت'].value_counts().reset_index()
 gender_counts.columns = ['جنسیت', 'تعداد']
 
-# رسم نمودار با Plotly
+
 fig = px.pie(gender_counts, values='تعداد', names='جنسیت', title='توزیع جنسیت')
 st.plotly_chart(fig)
 
 # --------------
 
-# رسم نمودار ستونی بر اساس نوع دوره
 st.title("نمودار نوع دوره ثبت نامی‌ها")
 
-# شمارش تعداد افراد بر اساس نوع دوره
 course_counts = df['نوع دوره'].value_counts().reset_index()
 course_counts.columns = ['نوع دوره', 'تعداد']
 
-# رسم نمودار ستونی با Plotly
 fig2 = px.bar(course_counts, x='نوع دوره', y='تعداد', title='توزیع نوع دوره')
 st.plotly_chart(fig2)
