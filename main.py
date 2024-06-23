@@ -33,7 +33,7 @@ if st.button('ارسال'):
         }
         new_df = pd.DataFrame([new_data])
         df = pd.concat([df, new_df], ignore_index=True)
-        conn.update(data=df, worksheet="ثبت نام دوره")
+        conn.update(data=df, worksheet="sheet1")
         st.success('اطلاعات شما با موفقیت ذخیره شد!')
     else:
         st.error('لطفاً تمام اطلاعات را وارد کنید.')
