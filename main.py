@@ -35,7 +35,7 @@ if st.button('ارسال'):
         }
         new_df = pd.DataFrame([new_data])
         df = pd.concat([df, new_df], ignore_index=True)
-        conn.update(data=df, worksheet="Sheet3")
+        conn.update(spreadsheet="1dof1Nl5ojO0woIp64OhwmYsw-VI-kFOO3ZMyy6zgcgI",data=df, worksheet="Sheet3")
         st.success('اطلاعات شما با موفقیت ذخیره شد!')
     else:
         st.error('لطفاً تمام اطلاعات را وارد کنید.')
