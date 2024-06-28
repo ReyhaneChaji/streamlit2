@@ -33,17 +33,20 @@ if st.button('ارسال'):
         }
         new_df = pd.DataFrame([new_data])
         df = pd.concat([df, new_df], ignore_index=True)
-        conn.update(data=df, spreadsheet="1dof1Nl5ojO0woIp64OhwmYsw-VI-kFOO3ZMyy6zgcgI", worksheet="577754902")
+        conn.update(data=df, worksheet="Sheet3")
         st.success('اطلاعات شما با موفقیت ذخیره شد!')
     else:
         st.error('لطفاً تمام اطلاعات را وارد کنید.')
 
 # --------------
 
+
 st.title("نمودار جنسیت ثبت نامی‌ها")
+
 
 gender_counts = df['جنسیت'].value_counts().reset_index()
 gender_counts.columns = ['جنسیت', 'تعداد']
+
 
 fig = px.pie(gender_counts, values='تعداد', names='جنسیت', title='توزیع جنسیت')
 st.plotly_chart(fig)
