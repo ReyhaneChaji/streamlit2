@@ -23,6 +23,7 @@ course_type = st.selectbox('نوع دوره:', ['حضوری', 'غیر حضوری
 gender = st.selectbox('جنسیت:', ['مرد', 'زن', 'سایر'])
 
 # دکمه ارسال
+
 if st.button('ارسال'):
     if name and family and phone_number and course_type and gender:
         new_data = {
@@ -34,10 +35,11 @@ if st.button('ارسال'):
         }
         new_df = pd.DataFrame([new_data])
         df = pd.concat([df, new_df], ignore_index=True)
-        worksheet.append_row(list(new_data.values()))
+        conn.update(data=df, worksheet="Sheet3")
         st.success('اطلاعات شما با موفقیت ذخیره شد!')
     else:
         st.error('لطفاً تمام اطلاعات را وارد کنید.')
+
 
 # --------------
 
