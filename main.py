@@ -6,7 +6,7 @@ import plotly.express as px
 st.title("لیست ثبت نامی ها ")
 
 conn = st.connection("gsheets", type=GSheetsConnection)
-df = conn.read(worksheet="Sheet3")
+df = conn.read(spreadsheet="577754902",worksheet="Sheet3")
 
 st.dataframe(df)
 
