@@ -2,6 +2,7 @@ import streamlit as st
 from streamlit_gsheets import GSheetsConnection
 import pandas as pd
 import plotly.express as px
+import gspread
 
 st.title("لیست ثبت نامی ها ")
 
@@ -33,7 +34,7 @@ if st.button('ارسال'):
         }
         new_df = pd.DataFrame([new_data])
         df = pd.concat([df, new_df], ignore_index=True)
-        conn.update(data=df, worksheet="Sheet3")
+        worksheet.append_row(list(new_data.values()))
         st.success('اطلاعات شما با موفقیت ذخیره شد!')
     else:
         st.error('لطفاً تمام اطلاعات را وارد کنید.')
