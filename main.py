@@ -6,7 +6,7 @@ import plotly.express as px
 st.title("لیست ثبت نامی ها ")
 
 conn = st.connection("gsheets", type=GSheetsConnection)
-df = conn.read(worksheet="sheet1")
+df = conn.read(worksheet="Sheet2")
 
 st.dataframe(df)
 
@@ -33,7 +33,7 @@ if st.button('ارسال'):
         }
         new_df = pd.DataFrame([new_data])
         df = pd.concat([df, new_df], ignore_index=True)
-        conn.update(data=df, worksheet="sheet1")
+        conn.update(data=df, worksheet="Sheet2")
         st.success('اطلاعات شما با موفقیت ذخیره شد!')
     else:
         st.error('لطفاً تمام اطلاعات را وارد کنید.')
