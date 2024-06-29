@@ -2,64 +2,52 @@ import streamlit as st
 from streamlit_gsheets import GSheetsConnection
 import pandas as pd
 import plotly.express as px
-import gspread
 
-st.title("لیست ثبت نامی ها ")
+st.title("Read Google Sheet as DataFrame")
 
+# اتصال به گوگل شیت
 conn = st.connection("gsheets", type=GSheetsConnection)
-df = conn.read(spreadsheet="1dof1Nl5ojO0woIp64OhwmYsw-VI-kFOO3ZMyy6zgcgI", worksheet="577754902")
+df = conn.read(spreadsheet="",worksheet="Sheet2")
 
 st.dataframe(df)
 
-# --------------
+# فرم نظرسنجی
+st.title("فرم نظرسنجی")
 
-st.title('فرم ثبت نام در دوره استریم لیت')
-st.info('لطفاً اطلاعات خود را در این فرم وارد کنید.')
+name = st.text_input("نام:")
+family = st.text_input("نام خانوادگی:")
+email = st.text_input("آدرس ایمیل:")
+phone_number = st.text_input("شماره تماس:")
 
-name = st.text_input('نام:')
-family = st.text_input('نام خانوادگی:')
-phone_number = st.text_input('شماره تماس:')
-course_type = st.selectbox('نوع دوره:', ['حضوری', 'غیر حضوری'])
-gender = st.selectbox('جنسیت:', ['مرد', 'زن', 'سایر'])
+services = st.multiselect(
+    "نوع خدمت دریافتی:",
+    ["کاشت", "ترمیم", "مانیکور"]
+)
+
+feedback = st.text_area("نظر خود را بنویسید:")
 
 # دکمه ارسال
-
 if st.button('ارسال'):
-    if name and family and phone_number and course_type and gender:
+    if name and family and email and phone_number and services and feedback:
         new_data = {
             'نام': name,
             'نام خانوادگی': family,
+            'آدرس ایمیل': email,
             'شماره تماس': phone_number,
-            'نوع دوره': course_type,
-            'جنسیت': gender
+            'نوع خدمت دریافتی': ", ".join(services),
+            'نظر': feedback
         }
         new_df = pd.DataFrame([new_data])
         df = pd.concat([df, new_df], ignore_index=True)
-        conn.update(spreadsheet="1dof1Nl5ojO0woIp64OhwmYsw-VI-kFOO3ZMyy6zgcgI",data=df, worksheet="Sheet3")
-        st.success('اطلاعات شما با موفقیت ذخیره شد!')
+        conn.update(data=df, worksheet="Sheet2")
+        st.success('نظر شما با موفقیت ذخیره شد!')
     else:
         st.error('لطفاً تمام اطلاعات را وارد کنید.')
 
+st.dataframe(df)
 
-# --------------
-
-
-st.title("نمودار جنسیت ثبت نامی‌ها")
-
-
-gender_counts = df['جنسیت'].value_counts().reset_index()
-gender_counts.columns = ['جنسیت', 'تعداد']
-
-
-fig = px.pie(gender_counts, values='تعداد', names='جنسیت', title='توزیع جنسیت')
-st.plotly_chart(fig)
-
-# --------------
-
-st.title("نمودار نوع دوره ثبت نامی‌ها")
-
-course_counts = df['نوع دوره'].value_counts().reset_index()
-course_counts.columns = ['نوع دوره', 'تعداد']
-
-fig2 = px.bar(course_counts, x='نوع دوره', y='تعداد', title='توزیع نوع دوره')
-st.plotly_chart(fig2)
+# ایجاد نمودار دایره‌ای برای نوع خدمات دریافتی
+if not df.empty:
+    services_count = df['نوع خدمت دریافتی'].str.get_dummies(sep=', ').sum()
+    fig = px.pie(services_count, names=services_count.index, values=services_count.values, title='توزیع نوع خدمات دریافتی')
+    st.plotly_chart(fig)
