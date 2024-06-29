@@ -7,7 +7,7 @@ st.title("Read Google Sheet as DataFrame")
 
 # اتصال به گوگل شیت
 conn = st.connection("gsheets", type=GSheetsConnection)
-df = conn.read(spreadsheet="103933227",worksheet="Sheet2")
+df = conn.read(worksheet="Sheet2")
 
 st.dataframe(df)
 
